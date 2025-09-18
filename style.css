@@ -1,0 +1,3 @@
+body { font-family: system-ui, sans-serif; background:#0f1221; color:white; }
+.wrap { max-width:900px; margin:auto; padding:16px; }
+.card { background:#171b33; border-radius:16px; padding:16px; }
