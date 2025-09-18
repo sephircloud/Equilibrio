@@ -1,12 +1,6 @@
 # Respilibrio 🌬️🏃
+Mini-app de respiration guidée, avec coureur qui avance jusqu'à l'arrivée sur la durée de la séance. Responsive, fond d'écran personnalisable, installable (PWA).
 
-Application de respiration guidée et ludique.
-
-- Inspire / expire avec une bulle animée
-- Un coureur atteint l’arrivée quand le timer global termine
-- Fond d’écran personnalisable
-- Compatible mobile et installable comme PWA
-
-## Démo
-Activez GitHub Pages (branch `main`, dossier `/root`), puis ouvrez :
-`https://tonpseudo.github.io/respilibrio/`
+## Déploiement GitHub Pages
+- Settings → Pages → Branch: `main`, Folder: `/ (root)` → Save
+- Ouvrir: `https://<tonpseudo>.github.io/respilibrio/`

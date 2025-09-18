@@ -8,31 +8,48 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/favicon.ico" type="image/x-icon" />
   <meta name="theme-color" content="#6de0b6" />
-  <script defer src="script.js"></script>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <h1>Respilibrio</h1>
-      <p>Maintiens pendant <strong>Inspire</strong>, relâche pendant <strong>Expire</strong>. 
-         Le coureur atteint l’arrivée quand le <strong>timer global</strong> termine.</p>
+      <p>Maintiens pendant <strong>Inspire</strong>, relâche pendant <strong>Expire</strong>. Le coureur atteint l’arrivée quand le <strong>timer global</strong> termine.</p>
 
-      <div class="grid">
-        <div class="col"><label>Durée inspir. (s)</label><input id="inSecs" type="number" min="2" max="12" value="5"></div>
-        <div class="col"><label>Durée expir. (s)</label><input id="outSecs" type="number" min="2" max="12" value="5"></div>
-        <div class="col"><label>Durée séance (min)</label><input id="mins" type="number" min="1" max="30" value="5"></div>
-        <div class="col"><label>Base croissance (GR)</label><input id="baseGr" type="number" min="5" max="5000" value="10"></div>
+      <div class="grid" style="margin-top:8px">
+        <div class="col">
+          <label>Durée inspir. (s)</label>
+          <input id="inSecs" type="number" min="2" max="12" value="5">
+        </div>
+        <div class="col">
+          <label>Durée expir. (s)</label>
+          <input id="outSecs" type="number" min="2" max="12" value="5">
+        </div>
+        <div class="col">
+          <label>Durée séance (min)</label>
+          <input id="mins" type="number" min="1" max="30" value="5">
+        </div>
+        <div class="col">
+          <label>Base croissance (GR)</label>
+          <input id="baseGr" type="number" min="5" max="5000" value="10">
+        </div>
       </div>
 
       <div class="row-slim">
         <div class="col">
           <label>Fond d’écran perso (image)</label>
           <input id="bgFile" type="file" accept="image/*">
-          <div id="bgThumb" class="thumb"></div>
+          <div id="bgThumb" class="thumb" style="margin-top:6px"></div>
+          <div class="helper">Astuce : une image verticale rend mieux sur mobile.</div>
         </div>
-        <div class="col"><label>Assombrir</label><input id="bgDim" type="range" min="0" max="0.8" step="0.02" value="0.2"></div>
-        <div class="col"><label>Flou (px)</label><input id="bgBlur" type="range" min="0" max="10" step="1" value="0"></div>
-        <div class="col" style="display:flex;flex-direction:column;gap:6px">
+        <div class="col">
+          <label>Assombrir</label>
+          <input id="bgDim" type="range" min="0" max="0.8" step="0.02" value="0.2">
+        </div>
+        <div class="col">
+          <label>Flou (px)</label>
+          <input id="bgBlur" type="range" min="0" max="10" step="1" value="0">
+        </div>
+        <div class="col" style="align-items:flex-end;gap:6px;display:flex;flex-direction:column">
           <button class="btn" id="applyBg">Appliquer</button>
           <button class="btn" id="resetBg">Réinitialiser</button>
         </div>
@@ -72,5 +89,6 @@
       </div>
     </div>
   </div>
+  <script src="script.js"></script>
 </body>
 </html>
