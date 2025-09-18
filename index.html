@@ -10,12 +10,57 @@
   <meta name="theme-color" content="#6de0b6" />
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Respilibrio</h1>
-      <p>Maintiens pendant <strong>Inspire</strong>, relâche pendant <strong>Expire</strong>. Le coureur atteint l’arrivée quand le <strong>timer global</strong> termine.</p>
+  <header class="appbar">
+    <h1>Respilibrio</h1>
+    <button id="openSettings" class="iconbtn" aria-label="Réglages">⚙️</button>
+  </header>
 
-      <div class="grid" style="margin-top:8px">
+  <main class="stage" id="stageArea">
+    <!-- Background image element -->
+    <div class="bgImg" id="bgImg" aria-hidden="true"></div>
+    <div class="overlay"></div>
+
+    <div class="center">
+      <div class="bubble" id="bubble" role="button" tabindex="0" aria-label="Zone de respiration"></div>
+      <div class="legend">
+        <div id="phaseText">Prêt ?</div>
+        <div class="mini" id="timerText">00:00</div>
+        <div class="mini" id="phaseCountdown">Phase: — • Reste: —</div>
+        <div class="mini" id="hintText">Maintiens = Inspire • Relâche = Expire</div>
+      </div>
+    </div>
+
+    <div class="hudBottom">
+      <div class="runnerLane">
+        <div class="runner-shadow" id="runnerShadow"></div>
+        <div class="runner" id="runner"><div class="face">🏃‍♂️</div></div>
+        <div class="finishFlag"></div>
+        <div class="finishLabel">ARRIVÉE</div>
+        <div class="ribbon" id="ribbon">
+          <div class="ribL"></div>
+          <div class="ribR"></div>
+          <div class="ribText">ARRIVÉE</div>
+        </div>
+      </div>
+      <div class="meter"><div id="meterFill"></div></div>
+    </div>
+  </main>
+
+  <footer class="actions">
+    <button class="btn primary" id="startBtn">Démarrer</button>
+    <button class="btn" id="stopBtn" disabled>Arrêter</button>
+    <span class="mini" id="resultText"></span>
+  </footer>
+
+  <!-- Settings modal -->
+  <div id="settingsModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="modal-head">
+        <h2 id="settingsTitle">Réglages</h2>
+        <button id="closeSettings" class="iconbtn" aria-label="Fermer">✖</button>
+      </div>
+
+      <div class="grid">
         <div class="col">
           <label>Durée inspir. (s)</label>
           <input id="inSecs" type="number" min="2" max="12" value="5">
@@ -54,41 +99,9 @@
           <button class="btn" id="resetBg">Réinitialiser</button>
         </div>
       </div>
-
-      <div class="stage" id="stageArea">
-        <div class="center">
-          <div class="bubble" id="bubble" role="button" tabindex="0" aria-label="Zone de respiration"></div>
-          <div class="legend">
-            <div id="phaseText">Prêt ?</div>
-            <div class="mini" id="timerText">00:00</div>
-            <div class="mini" id="phaseCountdown">Phase: — • Reste: —</div>
-            <div class="mini" id="hintText">Maintiens pendant l’inspiration, relâche pendant l’expiration.</div>
-          </div>
-        </div>
-
-        <div class="hudBottom">
-          <div class="runnerLane">
-            <div class="runner-shadow" id="runnerShadow"></div>
-            <div class="runner" id="runner"><div class="face">🏃‍♂️</div></div>
-            <div class="finishFlag"></div>
-            <div class="finishLabel">ARRIVÉE</div>
-            <div class="ribbon" id="ribbon">
-              <div class="ribL"></div>
-              <div class="ribR"></div>
-              <div class="ribText">ARRIVÉE</div>
-            </div>
-          </div>
-          <div class="meter"><div id="meterFill"></div></div>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button class="btn primary" id="startBtn">Démarrer</button>
-        <button class="btn" id="stopBtn" disabled>Arrêter</button>
-        <span class="mini" id="resultText"></span>
-      </div>
     </div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>

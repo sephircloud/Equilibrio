@@ -1,17 +1,29 @@
 (function(){
-  const LS = { growth:'runner_growth_v1', last:'runner_last_v1', streak:'runner_streak_v1', bgImg:'runner_bgimg_v1', bgDim:'runner_bgdim_v1', bgBlur:'runner_bgblur_v1' };
-  let growth = parseInt(localStorage.getItem(LS.growth)||'0',10);
-  let last = localStorage.getItem(LS.last)||null;
-  let streak = parseInt(localStorage.getItem(LS.streak)||'0',10);
-  function isYesterday(d1,d2){const a=new Date(d1),b=new Date(d2);const d=(new Date(b.getFullYear(),b.getMonth(),b.getDate())-new Date(a.getFullYear(),a.getMonth(),a.getDate()))/(1000*60*60*24);return d===1;}
-  function sameDay(d1,d2){const a=new Date(d1),b=new Date(d2);return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();}
-  if(last){const now=new Date(); if(!sameDay(last,now)&&!isYesterday(last,now)) streak=0;}
+  const LS = { growth:'runner_growth_v2', last:'runner_last_v2', streak:'runner_streak_v2', bgImg:'runner_bgimg_v2', bgDim:'runner_bgdim_v2', bgBlur:'runner_bgblur_v2' };
 
+  // Modal controls
+  const openBtn = document.getElementById('openSettings');
+  const closeBtn = document.getElementById('closeSettings');
+  const modal = document.getElementById('settingsModal');
+  openBtn.addEventListener('click', ()=> modal.classList.add('show'));
+  closeBtn.addEventListener('click', ()=> modal.classList.remove('show'));
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.classList.remove('show'); });
+
+  // DOM
   const startBtn=document.getElementById('startBtn'), stopBtn=document.getElementById('stopBtn'), resultText=document.getElementById('resultText');
   const bubble=document.getElementById('bubble'), phaseText=document.getElementById('phaseText'), timerText=document.getElementById('timerText'), phaseCountdown=document.getElementById('phaseCountdown');
   const meterFill=document.getElementById('meterFill'), runner=document.getElementById('runner'), runnerShadow=document.getElementById('runnerShadow'), ribbon=document.getElementById('ribbon');
+  const bgImgEl=document.getElementById('bgImg');
+  const bgFile=document.getElementById('bgFile'), bgThumb=document.getElementById('bgThumb'), bgDim=document.getElementById('bgDim'), bgBlur=document.getElementById('bgBlur');
+  const applyBg=document.getElementById('applyBg'), resetBg=document.getElementById('resetBg');
 
-  const bgFile=document.getElementById('bgFile'), bgThumb=document.getElementById('bgThumb'), bgDim=document.getElementById('bgDim'), bgBlur=document.getElementById('bgBlur'), applyBg=document.getElementById('applyBg'), resetBg=document.getElementById('resetBg');
+  let growth = parseInt(localStorage.getItem(LS.growth)||'0',10);
+  let last = localStorage.getItem(LS.last)||null;
+  let streak = parseInt(localStorage.getItem(LS.streak)||'0',10);
+
+  function isYesterday(d1,d2){const a=new Date(d1),b=new Date(d2);const d=(new Date(b.getFullYear(),b.getMonth(),b.getDate())-new Date(a.getFullYear(),a.getMonth(),a.getDate()))/(1000*60*60*24);return d===1;}
+  function sameDay(d1,d2){const a=new Date(d1),b=new Date(d2);return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();}
+  if(last){const now=new Date(); if(!sameDay(last,now)&&!isYesterday(last,now)) streak=0;}
 
   let running=false, pressed=false, phase='IDLE', expectedPressed=false;
   let inMs=5000, outMs=5000, totalMs=300000;
@@ -28,20 +40,28 @@
     inMs=ms(ins*1000); outMs=ms(outs*1000); totalMs=ms(mins*60000);
   }
 
-  function applyBgVars(url){ document.documentElement.style.setProperty('--bg-url', url?`url(${url})`:'none'); bgThumb.style.backgroundImage = url?`url(${url})`:'none'; }
+  // Background handlers — use real element for robustness
+  function setBgUrl(url){ bgImgEl.style.backgroundImage = url ? `url(${url})` : 'none'; bgThumb.style.backgroundImage = url ? `url(${url})` : 'none'; }
   (function initBg(){
-    const saved=localStorage.getItem(LS.bgImg);
-    const dim=parseFloat(localStorage.getItem(LS.bgDim)||'0.2');
-    const blur=parseInt(localStorage.getItem(LS.bgBlur)||'0',10);
-    if(saved) applyBgVars(saved);
-    document.documentElement.style.setProperty('--bg-dim', isNaN(dim)?0.2:dim);
-    document.documentElement.style.setProperty('--bg-blur', (isNaN(blur)?0:blur)+'px');
-    bgDim.value=isNaN(dim)?0.2:dim; bgBlur.value=isNaN(blur)?0:blur;
+    const saved = localStorage.getItem(LS.bgImg);
+    const dim = parseFloat(localStorage.getItem(LS.bgDim)||'0.25');
+    const blur = parseInt(localStorage.getItem(LS.bgBlur)||'0',10);
+    setBgUrl(saved); document.documentElement.style.setProperty('--dim', isNaN(dim)?0.25:dim); document.documentElement.style.setProperty('--blur', (isNaN(blur)?0:blur)+'px');
+    bgDim.value = isNaN(dim)?0.25:dim; bgBlur.value = isNaN(blur)?0:blur;
   })();
-  bgDim.addEventListener('input', ()=>{ const v=parseFloat(bgDim.value||'0.2'); document.documentElement.style.setProperty('--bg-dim', v); localStorage.setItem(LS.bgDim, String(v)); });
-  bgBlur.addEventListener('input', ()=>{ const v=parseInt(bgBlur.value||'0',10); document.documentElement.style.setProperty('--bg-blur', v+'px'); localStorage.setItem(LS.bgBlur, String(v)); });
-  applyBg.addEventListener('click', ()=>{ const f=bgFile.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=e=>{ const data=e.target.result; applyBgVars(data); try{localStorage.setItem(LS.bgImg,data);}catch(err){console.warn('Image trop lourde',err);} }; r.readAsDataURL(f); });
-  resetBg.addEventListener('click', ()=>{ localStorage.removeItem(LS.bgImg); applyBgVars(null); });
+  bgDim.addEventListener('input', ()=>{ const v=parseFloat(bgDim.value||'0.25'); document.documentElement.style.setProperty('--dim', v); localStorage.setItem(LS.bgDim, String(v)); });
+  bgBlur.addEventListener('input', ()=>{ const v=parseInt(bgBlur.value||'0',10); document.documentElement.style.setProperty('--blur', v+'px'); localStorage.setItem(LS.bgBlur, String(v)); });
+  applyBg.addEventListener('click', ()=>{
+    const f = bgFile.files?.[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+      const dataUrl = e.target.result;
+      setBgUrl(dataUrl);
+      try { localStorage.setItem(LS.bgImg, dataUrl); } catch(err){ console.warn('Image trop lourde pour le stockage local', err); }
+    };
+    r.readAsDataURL(f);
+  });
+  resetBg.addEventListener('click', ()=>{ localStorage.removeItem(LS.bgImg); setBgUrl(null); });
 
   function setPressed(v){ if(!running) return; if(pressed===v) return; pressed=v; bubble.classList.toggle('hold', v); if(v && phase!=='INHALE') startPhase('INHALE'); if(!v && phase!=='EXHALE') startPhase('EXHALE'); }
   bubble.addEventListener('pointerdown', e=>{e.preventDefault(); setPressed(true);});
@@ -52,7 +72,7 @@
   bubble.addEventListener('keyup', e=>{ if(e.code==='Space'||e.code==='Enter'){ e.preventDefault(); setPressed(false); } });
 
   function startPhase(kind){ phase=kind; expectedPressed=(kind==='INHALE'); phaseStart=performance.now(); phaseTargetMs=(kind==='INHALE')?inMs:outMs; phaseElapsedMs=0; phaseText.textContent=(kind==='INHALE')?'Inspire…':'Expire…'; }
-  function autoSwitchIfReached(){ if(phaseElapsedMs>=phaseTargetMs){ if(phase==='INHALE'&&pressed) startPhase('EXHALE'); else if(phase==='EXHALE'&&!pressed) startPhase('INHALE'); } }
+  function autoSwitchIfReached(){ if(phaseElapsedMs>=phaseTargetMs){ if(phase==='INHALE' && pressed) startPhase('EXHALE'); else if(phase==='EXHALE' && !pressed) startPhase('INHALE'); } }
 
   function startSession(){
     if(running) return;
@@ -72,13 +92,9 @@
     bubble.style.transform='scale(1)'; bubble.style.setProperty('--glow','0');
     expectedPressed=false; phase='IDLE'; if(rafId) cancelAnimationFrame(rafId); if(sampler) clearInterval(sampler);
     const precision = playableMs>0 ? Math.max(0,Math.min(1,goodMs/playableMs)) : 0;
-    const now=new Date(); if(last){ if(isYesterday(last,now)) streak=Math.min(streak+1,999); else if(!sameDay(last,now)) streak=0; } else { streak=1; }
-    const streakBonus=Math.min(0.25,0.05*Math.max(0,streak-1));
-    const baseGr=parseInt(document.getElementById('baseGr').value||'10',10);
-    const earned=Math.round(precision*baseGr*(1+streakBonus));
-    growth+=earned; last=now.toISOString(); localStorage.setItem(LS.growth,String(growth)); localStorage.setItem(LS.last,last); localStorage.setItem(LS.streak,String(streak));
+    // Simple GR (facultatif)
     const pct=Math.round(precision*100);
-    resultText.innerHTML=`Précision&nbsp;: <span class="${pct>=75?'ok':(pct>=40?'warn':'')}">${pct}%</span> • +<strong>${earned} GR</strong>${manual?' (arrêt)':''}`;
+    resultText.innerHTML=`Précision : <strong>${pct}%</strong>${manual?' (arrêt)':''}`;
   }
   function setRunnerX(percent){ const p=Math.max(0,Math.min(100,percent)); const left=p+'%'; runner.style.left=left; runnerShadow.style.left=left; }
   function tick(now){
@@ -88,7 +104,7 @@
     if(phase!=='IDLE'){
       phaseElapsedMs=now - phaseStart;
       const q=Math.max(0,Math.min(1, phaseElapsedMs / Math.max(1,phaseTargetMs)));
-      const scale=(phase==='INHALE') ? (SCALE_MIN + (SCALE_MAX-SCALE_MIN)*q) : (SCALE_MAX - (SCALE_MAX-SCALE_MIN)*q);
+      const scale=(phase==='INHALE') ? (0.70 + (1.40-0.70)*q) : (1.40 - (1.40-0.70)*q);
       bubble.style.transform=`scale(${scale.toFixed(3)})`; bubble.style.setProperty('--glow',(q*(phase==='INHALE'?1:0.4)).toFixed(2));
       const remain=Math.max(0, phaseTargetMs - phaseElapsedMs); phaseCountdown.textContent=`Phase: ${phase==='INHALE'?'Inspire':'Expire'} • Reste: ${Math.ceil(remain/1000)}s`;
       autoSwitchIfReached();
