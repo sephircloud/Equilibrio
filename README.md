@@ -1,14 +1,12 @@
 # Respilibrio 🌬️🏃
 
-**Respilibrio** est une mini-application de respiration guidée et ludique.
+Application de respiration guidée et ludique.
 
-- Inspirer / Expirer au rythme de la bulle
-- Un coureur atteint la ligne d’arrivée en même temps que le timer
-- Personnaliser avec votre fond d’écran
-- Compatible mobile, installable comme PWA
+- Inspire / expire avec une bulle animée
+- Un coureur atteint l’arrivée quand le timer global termine
+- Fond d’écran personnalisable
+- Compatible mobile et installable comme PWA
 
-## Déploiement
-Activez **GitHub Pages** dans les paramètres → branche `main` → `/root`.
-
-Votre appli sera disponible sur :
+## Démo
+Activez GitHub Pages (branch `main`, dossier `/root`), puis ouvrez :
 `https://tonpseudo.github.io/respilibrio/`

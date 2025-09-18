@@ -1,3 +1,11 @@
-body { font-family: system-ui, sans-serif; background:#0f1221; color:white; }
-.wrap { max-width:900px; margin:auto; padding:16px; }
-.card { background:#171b33; border-radius:16px; padding:16px; }
+body{margin:0;font-family:system-ui,sans-serif;background:#0f1221;color:#fff}
+.wrap{max-width:900px;margin:auto;padding:16px}
+.card{background:#171b33;border-radius:16px;padding:16px}
+h1{margin:0 0 6px}
+.btn{background:#2d3567;color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+.btn.primary{background:#3c8b6f}
+.stage{margin-top:16px;height:400px;background:#0f1430;position:relative;border-radius:12px}
+.bubble{width:150px;height:150px;border-radius:50%;background:#6de0b6;margin:auto}
+.runnerLane{position:absolute;bottom:20px;left:10px;right:10px;height:50px;background:#222;border-radius:8px}
+.runner{position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;background:#6de0b6;text-align:center;line-height:30px}
+.finishFlag{position:absolute;right:0;top:0;bottom:0;width:4px;background:#ffd36b}
